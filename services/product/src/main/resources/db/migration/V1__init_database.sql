@@ -17,5 +17,3 @@ create TABLE if not exists product
 
 create sequence if not exists category_seq increment by 50;
 create sequence if not exists product_seq increment by 50;
-
-
