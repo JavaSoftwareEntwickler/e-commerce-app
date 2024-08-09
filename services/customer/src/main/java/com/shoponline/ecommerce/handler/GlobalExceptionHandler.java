@@ -33,5 +33,4 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(errors));
     }
 
-
 }
