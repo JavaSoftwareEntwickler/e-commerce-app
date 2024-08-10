@@ -13,14 +13,22 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: orderConfirmation:com.shoponline.ecommerce.kafka.OrderConfirmation
+        
 application:
   config:
     #punto alla porta dei microservizi ma solo per il test poi dopo cambio il puntamento con api GW
-    #customer-url: http://localhost:8090/api/v1/customers
-    #product-url: http://localhost:8050/api/v1/products
-    #payment-url: http://localhost:8060/api/v1/payments
+    customer-url: http://localhost:8090/api/v1/customers
+    product-url: http://localhost:8050/api/v1/products
+    payment-url: http://localhost:8060/api/v1/payments
 
-    customer-url: http://localhost:8222/api/v1/customers
-    product-url: http://localhost:8222/api/v1/products
-    payment-url: http://localhost:8222/api/v1/payments
+    #customer-url: http://localhost:8222/api/v1/customers
+    #product-url: http://localhost:8222/api/v1/products
+  #payment-url: http://localhost:8222/api/v1/payments
 
