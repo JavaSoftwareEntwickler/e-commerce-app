@@ -15,7 +15,7 @@ public class OrderLine {
 
     @Id
     @GeneratedValue
-    private Integer Id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name="order_id")

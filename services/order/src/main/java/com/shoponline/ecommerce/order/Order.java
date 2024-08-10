@@ -25,7 +25,7 @@ public class Order {
 
     @Id
     @GeneratedValue
-    private Integer Id;
+    private Integer id;
 
     private String reference;
 
