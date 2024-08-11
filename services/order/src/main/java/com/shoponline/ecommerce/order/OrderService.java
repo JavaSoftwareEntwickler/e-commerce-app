@@ -1,17 +1,21 @@
 package com.shoponline.ecommerce.order;
 
 import com.shoponline.ecommerce.customer.CustomerClient;
+import com.shoponline.ecommerce.customer.CustomerResponse;
 import com.shoponline.ecommerce.exception.BusinessException;
 import com.shoponline.ecommerce.kafka.OrderConfirmation;
 import com.shoponline.ecommerce.kafka.OrderProducer;
 import com.shoponline.ecommerce.orderline.OrderLineRequest;
 import com.shoponline.ecommerce.orderline.OrderLineService;
+import com.shoponline.ecommerce.payment.PaymentClient;
+import com.shoponline.ecommerce.payment.PaymentRequest;
 import com.shoponline.ecommerce.product.ProductClient;
 import com.shoponline.ecommerce.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +29,7 @@ public class OrderService {
     private final OrderMapper mapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
     public Integer createOrder(OrderRequest request) {
 
         //check customer --> OpenFeign
@@ -50,7 +55,17 @@ public class OrderService {
             );
         }
 
-        //TODO start payment process
+        //start payment process
+        paymentClient.getOrderPayment(
+                new PaymentRequest(
+                        null,
+                        request.amount(),
+                        request.paymentMethod(),
+                        order.getId(),
+                        order.getReference(),
+                        customer
+                )
+        );
 
         //send order confermation to customer --> notification-service (send message to kafka broker)
         orderProducer.sendOrderConfirmation(
