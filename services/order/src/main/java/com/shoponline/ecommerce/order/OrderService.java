@@ -4,13 +4,16 @@ import com.shoponline.ecommerce.customer.CustomerClient;
 import com.shoponline.ecommerce.exception.BusinessException;
 import com.shoponline.ecommerce.kafka.OrderConfirmation;
 import com.shoponline.ecommerce.kafka.OrderProducer;
-import com.shoponline.ecommerce.orderline.OrderLine;
 import com.shoponline.ecommerce.orderline.OrderLineRequest;
 import com.shoponline.ecommerce.orderline.OrderLineService;
 import com.shoponline.ecommerce.product.ProductClient;
 import com.shoponline.ecommerce.product.PurchaseRequest;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,5 +63,18 @@ public class OrderService {
                 )
         );
         return order.getId();
+    }
+
+    public List<OrderResponse> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(mapper::fromOrderToOrderResponse)
+                .collect(Collectors.toList());
+    }
+
+    public OrderResponse findById(Integer orderId) {
+        return repository.findById(orderId)
+                .map(mapper::fromOrderToOrderResponse)
+                .orElseThrow(()-> new EntityNotFoundException("Order not found with the provided ID::" +orderId));
     }
 }
