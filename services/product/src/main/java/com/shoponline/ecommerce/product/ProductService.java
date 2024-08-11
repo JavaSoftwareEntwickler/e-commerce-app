@@ -2,6 +2,7 @@ package com.shoponline.ecommerce.product;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.shoponline.ecommerce.exception.ProductPurchaseException;
 
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository repository;
@@ -53,7 +55,10 @@ public class ProductService {
     public ProductResponse findById(Integer productId) {
         return repository.findById(productId)
                 .map(mapper::toProductResponse)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with the ID::" + productId));
+                .orElseThrow(() -> {
+                    log.error("Product not found with the ID::" + productId);
+                    return new EntityNotFoundException("Product not found with the ID::" + productId);
+                });
     }
 
     public List<ProductResponse> findAll() {
