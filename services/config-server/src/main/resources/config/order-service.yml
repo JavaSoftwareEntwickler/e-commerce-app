@@ -9,7 +9,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
@@ -24,11 +24,11 @@ spring:
 application:
   config:
     #punto alla porta dei microservizi ma solo per il test poi dopo cambio il puntamento con api GW
-    customer-url: http://localhost:8090/api/v1/customers
-    product-url: http://localhost:8050/api/v1/products
-    payment-url: http://localhost:8060/api/v1/payments
+    #customer-url: http://localhost:8090/api/v1/customers
+    #product-url: http://localhost:8050/api/v1/products
+    #payment-url: http://localhost:8060/api/v1/payments
 
-    #customer-url: http://localhost:8222/api/v1/customers
-    #product-url: http://localhost:8222/api/v1/products
-  #payment-url: http://localhost:8222/api/v1/payments
+    customer-url: http://localhost:8222/api/v1/customers
+    product-url: http://localhost:8222/api/v1/products
+    payment-url: http://localhost:8222/api/v1/payments
 
