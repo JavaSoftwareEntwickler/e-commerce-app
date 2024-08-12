@@ -3,7 +3,7 @@ package com.shoponline.ecommerce.kafka.order;
 import java.math.BigDecimal;
 
 public record Product(
-    Integer id,
+    Integer productId,
     String name,
     String description,
     BigDecimal price,
