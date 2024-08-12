@@ -1,6 +1,24 @@
 server:
   port: 8070
 
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      #defaultZone: http://discoveryserver:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  zipkin:
+    tracing:
+      sampling:
+        probability: 1.0
+
+
+
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/order
@@ -20,7 +38,10 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.type.mapping: orderConfirmation:com.shoponline.ecommerce.kafka.OrderConfirmation
-        
+  cloud:
+    config:
+      override-system-properties: false
+
 application:
   config:
     #punto alla porta dei microservizi ma solo per il test poi dopo cambio il puntamento con api GW

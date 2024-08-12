@@ -10,3 +10,21 @@ spring:
       port: 27017
       database: customer
       authentication-database: admin
+  cloud:
+    config:
+      override-system-properties: false
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      #defaultZone: http://discoveryserver:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  zipkin:
+    tracing:
+      sampling:
+        probability: 1.0
+

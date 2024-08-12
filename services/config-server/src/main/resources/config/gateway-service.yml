@@ -1,6 +1,21 @@
 server:
   port: 8222
 
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      #defaultZone: http://discoveryserver:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  zipkin:
+    tracing:
+      sampling:
+        probability: 1.0
+
 spring:
   cloud:
     gateway:
@@ -28,3 +43,7 @@ spring:
           uri: lb:http://PAYMENT-SERVICE
           predicates:
             - Path=/api/v1/payments/**
+  config:
+    override-system-properties: false
+
+

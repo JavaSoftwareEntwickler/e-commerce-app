@@ -2,12 +2,21 @@ server:
   port: 8761
 
 eureka:
-  #renewalPercentThreshold: 0.85
-  instance:
-    prefer-ip-address: true
-    hostname: localhost
   client:
     registerWithEureka: false
     fetchRegistry: false
+    serviceUrl:
+      #defaultZone: http://discoveryserver:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
 
-
+management:
+  zipkin:
+    tracing:
+      sampling:
+        probability: 1.0
+spring:
+  cloud:
+    config:
+      override-system-properties: false

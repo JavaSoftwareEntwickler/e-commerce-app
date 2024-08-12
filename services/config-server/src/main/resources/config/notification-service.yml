@@ -1,15 +1,21 @@
 server:
   port: 8040
 
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      #defaultZone: http://discoveryserver:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  zipkin:
+    tracing:
+      sampling:
+        probability: 1.0
 spring:
-  data:
-    mongodb:
-      username: admin
-      password: pass
-      host: localhost
-      port: 27017
-      database: notification
-      authentication-database: admin
 
   kafka:
     consumer:
@@ -36,3 +42,16 @@ spring:
         connectiontimeout: 5000
         timeout: 3000
         writetimeout: 5000
+
+
+  data:
+    mongodb:
+      username: admin
+      password: pass
+      host: localhost
+      port: 27017
+      database: notification
+      authentication-database: admin
+  cloud:
+    config:
+      override-system-properties: false

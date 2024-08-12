@@ -1,6 +1,21 @@
 server:
   port: 8050
 
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      #defaultZone: http://discoveryserver:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  zipkin:
+    tracing:
+      sampling:
+        probability: 1.0
+
 spring:
   datasource:
       url: jdbc:postgresql://localhost:5432/product
@@ -20,4 +35,7 @@ spring:
     baseline-version: 1
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
+  cloud:
+    config:
+      override-system-properties: false
 

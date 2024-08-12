@@ -1,6 +1,24 @@
 server:
   port: 8060
 
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      #defaultZone: http://discoveryserver:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  zipkin:
+    tracing:
+      sampling:
+        probability: 1.0
+
+
+
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/payment
@@ -20,3 +38,6 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.type.mapping: paymentConfirmation:com.shoponline.ecommerce.kafka.PaymentConfirmation
+  cloud:
+    config:
+      override-system-properties: false
