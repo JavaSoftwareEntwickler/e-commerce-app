@@ -1,7 +1,6 @@
 package com.shoponline.ecommerce.order;
 
 import com.shoponline.ecommerce.customer.CustomerClient;
-import com.shoponline.ecommerce.customer.CustomerResponse;
 import com.shoponline.ecommerce.exception.BusinessException;
 import com.shoponline.ecommerce.kafka.OrderConfirmation;
 import com.shoponline.ecommerce.kafka.OrderProducer;
@@ -13,6 +12,7 @@ import com.shoponline.ecommerce.product.ProductClient;
 import com.shoponline.ecommerce.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final CustomerClient customerClient;
@@ -35,7 +36,7 @@ public class OrderService {
         //check customer --> OpenFeign
         var customer = this.customerClient.findCustomerById(request.customerId())
                 .orElseThrow(()-> new BusinessException("Cannot create order:: No Customer exists with the provided ID::" + request.customerId()));
-
+        log.info("Customer found ::" + customer.firstName() + " "+customer.lastName());
         //purchase the products --> product-service (RestTemplate e non OpenFeign)
         var purchasedProducts= this.productClient.purchaseProducts(request.products());
 
@@ -54,7 +55,7 @@ public class OrderService {
                     )
             );
         }
-
+        log.info("start payment process");
         //start payment process
         paymentClient.getOrderPayment(
                 new PaymentRequest(
@@ -66,8 +67,9 @@ public class OrderService {
                         customer
                 )
         );
-
-        //send order confermation to customer --> notification-service (send message to kafka broker)
+        log.info("finish payment process..");
+        log.info("start sending order confirmation....");
+        //send order confirmation to customer --> notification-service (send message to kafka broker)
         orderProducer.sendOrderConfirmation(
                 new OrderConfirmation(
                         request.reference(),
@@ -77,6 +79,7 @@ public class OrderService {
                         purchasedProducts
                 )
         );
+        log.info("sent order confirmation....");
         return order.getId();
     }
 

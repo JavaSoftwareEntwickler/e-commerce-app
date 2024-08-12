@@ -16,7 +16,7 @@ import static org.springframework.http.HttpMethod.POST;
 @RequiredArgsConstructor
 public class ProductClient {
 
-    @Value("${application.config.customer-url}")
+    @Value("${application.config.product-url}")
     private String productUrl;
 
     private final RestTemplate restTemplate;
